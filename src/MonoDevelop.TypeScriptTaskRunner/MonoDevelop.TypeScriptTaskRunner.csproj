@@ -40,6 +40,9 @@
     <Compile Include="Properties\AddinInfo.cs" />
     <Compile Include="MonoDevelop.TypeScriptTaskRunner\TypeScriptTaskRunnerProvider.cs" />
     <Compile Include="MonoDevelop.TypeScriptTaskRunner\TypeScriptTaskRunnerConfig.cs" />
+    <Compile Include="MonoDevelop.TypeScriptTaskRunner\TypeScriptCompilerCommandLine.cs" />
+    <Compile Include="MonoDevelop.TypeScriptTaskRunner\WebToolsAddin.cs" />
+    <Compile Include="MonoDevelop.TypeScriptTaskRunner\TypeScriptTaskRunnerCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\MonoDevelop.TypeScriptTaskRunner.addin.xml" />

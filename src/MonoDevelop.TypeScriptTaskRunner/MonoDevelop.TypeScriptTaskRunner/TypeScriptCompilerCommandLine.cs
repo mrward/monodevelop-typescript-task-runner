@@ -1,5 +1,5 @@
 ﻿//
-// TypeScriptTaskRunnerProvider.cs
+// TypeScriptCompilerCommandLine.cs
 //
 // Author:
 //       Matt Ward <matt.ward@microsoft.com>
@@ -24,40 +24,29 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TaskRunnerExplorer;
-using System.IO;
-using MonoDevelop.Core;
-
 namespace MonoDevelop.TypeScriptTaskRunner
 {
-	[TaskRunnerExport ("tsconfig.json")]
-	class TypeScriptTaskRunnerProvider : ITaskRunner
+	class TypeScriptCompilerCommandLine
 	{
-		public List<ITaskRunnerOption> Options { get; set; }
+		public string Command { get; set; }
+		public string Arguments { get; set; }
+		public string WorkingDirectory { get; set; }
 
-		public async Task<ITaskRunnerConfig> ParseConfig (ITaskRunnerCommandContext context, string configPath)
+		public static TypeScriptCompilerCommandLine CreateBuildCommandLine (string workingDirectory)
 		{
-			return await Task.Run (() => {
-				ITaskRunnerNode hierarchy = LoadHierarchy (configPath);
-				return new TypeScriptTaskRunnerConfig (hierarchy);
-			});
-		}
+			string command = "tsc";
+			string arguments = string.Empty;
 
-		ITaskRunnerNode LoadHierarchy (string configPath)
-		{
-			string workingDirectory = Path.GetDirectoryName (configPath);
+			if (WebToolsAddin.Exists) {
+				command = WebToolsAddin.NodePath;
+				arguments = WebToolsAddin.TypeScriptCompilerPath;
+			}
 
-			var root = new TaskRunnerNode ("TypeScript Task Runner");
-
-			root.Children.Add (new TaskRunnerNode ("tcs build", true) {
-				Description = "Runs 'tsc build'",
-				Command = new TypeScriptTaskRunnerCommand (workingDirectory)
-			});
-
-			return root;
+			return new TypeScriptCompilerCommandLine {
+				Command = command,
+				Arguments = arguments,
+				WorkingDirectory = workingDirectory
+			};
 		}
 	}
 }
