@@ -1,0 +1,13 @@
+﻿<ExtensionModel>
+	<Runtime>
+		<Import assembly="MonoDevelop.TypeScriptTaskRunner.dll" />
+	</Runtime>
+
+	<Extension path="/MonoDevelop/Ide/Composition">
+		<Assembly file="MonoDevelop.TypeScriptTaskRunner.dll" />
+	</Extension>
+
+	<Extension path="/MonoDevelop/Core/StockIcons">
+		<StockIcon stockid="md-typescript-task-runner" resource="TypeScriptLogo.png" size="Menu" />
+	</Extension>
+</ExtensionModel>

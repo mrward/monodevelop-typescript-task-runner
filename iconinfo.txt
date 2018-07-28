@@ -1,0 +1,1 @@
+https://raw.githubusercontent.com/Microsoft/TypeScript/master/tests/webhost/favicon-32x32.png
