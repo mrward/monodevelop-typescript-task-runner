@@ -32,9 +32,13 @@ namespace MonoDevelop.TypeScriptTaskRunner
 	{
 		TypeScriptCompilerCommandLine commandLine;
 
-		public TypeScriptTaskRunnerCommand (string workingDirectory)
+		public TypeScriptTaskRunnerCommand (string workingDirectory, bool isWatch = false)
 		{
-			commandLine = TypeScriptCompilerCommandLine.CreateBuildCommandLine (workingDirectory);
+			if (isWatch) {
+				commandLine = TypeScriptCompilerCommandLine.CreateWatchCommandLine (workingDirectory);
+			} else {
+				commandLine = TypeScriptCompilerCommandLine.CreateBuildCommandLine (workingDirectory);
+			}
 		}
 
 		public string Args {

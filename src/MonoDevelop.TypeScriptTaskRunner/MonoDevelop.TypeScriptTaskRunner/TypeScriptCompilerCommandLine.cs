@@ -48,5 +48,13 @@ namespace MonoDevelop.TypeScriptTaskRunner
 				WorkingDirectory = workingDirectory
 			};
 		}
+
+		public static TypeScriptCompilerCommandLine CreateWatchCommandLine (string workingDirectory)
+		{
+			var commandLine = CreateBuildCommandLine (workingDirectory);
+			commandLine.Arguments += " --watch";
+
+			return commandLine;
+		}
 	}
 }

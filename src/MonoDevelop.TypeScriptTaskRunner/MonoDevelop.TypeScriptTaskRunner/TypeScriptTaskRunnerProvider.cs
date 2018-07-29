@@ -57,6 +57,11 @@ namespace MonoDevelop.TypeScriptTaskRunner
 				Command = new TypeScriptTaskRunnerCommand (workingDirectory)
 			});
 
+			root.Children.Add (new TaskRunnerNode ("tcs watch", true) {
+				Description = "Runs 'tsc watch'",
+				Command = new TypeScriptTaskRunnerCommand (workingDirectory, isWatch: true)
+			});
+
 			return root;
 		}
 	}
