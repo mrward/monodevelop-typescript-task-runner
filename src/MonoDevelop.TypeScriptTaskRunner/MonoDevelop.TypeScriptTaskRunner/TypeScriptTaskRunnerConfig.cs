@@ -6,6 +6,8 @@
 //
 // Copyright (c) 2018 Microsoft
 //
+// Based on: https://github.com/madskristensen/TaskRunnerTemplate/blob/master/src/TaskRunnerExtension/TaskRunner/TaskRunnerConfig.cs
+//
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
 // in the Software without restriction, including without limitation the rights
@@ -24,6 +26,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
+using System;
+using System.IO;
+using System.Text;
 using Microsoft.VisualStudio.TaskRunnerExplorer;
 using MonoDevelop.Core;
 
@@ -46,12 +51,51 @@ namespace MonoDevelop.TypeScriptTaskRunner
 
 		public string LoadBindings (string configPath)
 		{
+			string bindingPath = configPath + ".bindings";
+
+			if (File.Exists (bindingPath)) {
+				foreach (string line in File.ReadAllLines (bindingPath)) {
+					if (line.StartsWith ("///<binding", StringComparison.OrdinalIgnoreCase)) {
+						return line.TrimStart ('/').Trim ();
+					}
+				}
+			}
+
 			return "<binding />";
 		}
 
 		public bool SaveBindings (string configPath, string bindingsXml)
 		{
-			return true;
+			string bindingPath = configPath + ".bindings";
+
+			try {
+				var sb = new StringBuilder ();
+
+				if (File.Exists (bindingPath)) {
+					string[] lines = File.ReadAllLines (bindingPath);
+
+					foreach (string line in lines) {
+						if (!line.TrimStart ().StartsWith ("///<binding", StringComparison.OrdinalIgnoreCase)) {
+							sb.AppendLine (line);
+						}
+					}
+				}
+
+				if (bindingsXml != "<binding />") {
+					sb.Insert (0, "///" + bindingsXml);
+				}
+
+				if (sb.Length == 0) {
+					File.Delete (bindingPath);
+				} else {
+					File.WriteAllText (bindingPath, sb.ToString (), Encoding.UTF8);
+				}
+
+				return true;
+			} catch (Exception ex) {
+				LoggingService.LogError ("SavingBindings error.", ex);
+				return false;
+			}
 		}
 	}
 }
