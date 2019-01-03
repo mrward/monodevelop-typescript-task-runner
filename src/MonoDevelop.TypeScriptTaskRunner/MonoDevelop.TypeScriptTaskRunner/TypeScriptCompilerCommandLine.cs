@@ -39,7 +39,7 @@ namespace MonoDevelop.TypeScriptTaskRunner
 
 			if (WebToolsAddin.Exists) {
 				command = WebToolsAddin.NodePath;
-				arguments = WebToolsAddin.TypeScriptCompilerPath;
+				arguments = string.Format ("\"{0}\"", WebToolsAddin.TypeScriptCompilerPath);
 			}
 
 			return new TypeScriptCompilerCommandLine {
